@@ -8,13 +8,12 @@ import { useEffect } from "react";
 export default function Home() {
   const { user } = useUser()
   const registerUser = async () => {
-    await addUser(user?.fullName, user?.primaryEmailAddress)
+    await addUser(user?.fullName, user?.emailAddresses[0])
 
   }
   useEffect(() => {
-    registerUser()
 
-  }, [user])
+  }, [])
   return (
     <div className="">
       <Navbar />

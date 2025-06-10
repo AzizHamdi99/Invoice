@@ -12,9 +12,8 @@ export default function Home() {
 
   }
   useEffect(() => {
-    registerUser()
 
-  }, [user])
+  }, [])
   return (
     <div className="">
       <Navbar />
