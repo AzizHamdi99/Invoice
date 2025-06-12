@@ -51,10 +51,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
     const handleAddProduct = () => {
         const newProduct = { quantity: 1, name: "", unitPrice: 0 }
-        setNewInvoice((prev: any) => ({
-            ...prev,
-            products: [...prev.products, newProduct],
-        }));
 
     }
 
@@ -171,10 +167,10 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 {newInvoice?.lines.map((item: any, i: number) => (
                                     <div key={i}>
 
-                                        <input type="number" placeholder='aziz' />
-                                        <input type="text" placeholder='aziz' />
-                                        <input type="number" placeholder='aziz' />
-                                        <input type="number" placeholder='aziz' />
+                                        <input type="number" />
+                                        <input type="text" />
+                                        <input type="number" />
+                                        <input type="number" />
                                         <div className='bg-[#ff8600] p-1 rounded-full'>
                                             <Trash2 />
                                         </div>

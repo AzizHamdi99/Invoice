@@ -51,10 +51,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
     const handleAddProduct = () => {
         const newProduct = { quantity: 1, name: "", unitPrice: 0 }
-        setNewInvoice((prev: any) => ({
-            ...prev,
-            products: [...prev.products, newProduct],
-        }));
+        setNewInvoice(...prev, [...lines,])
 
     }
 
