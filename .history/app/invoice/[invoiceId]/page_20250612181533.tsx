@@ -61,12 +61,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
         }));
 
     }
-    const handleRemoveProduct = (index: number) => {
-        const updatedProducts = [...newInvoice.products];
-        updatedProducts.splice(index, 1);
-        setNewInvoice((prev: any) => ({ ...prev, products: updatedProducts }));
-    };
-
 
     if (loading) {
         return (<div className="w-full flex justify-center items-center h-screen">
