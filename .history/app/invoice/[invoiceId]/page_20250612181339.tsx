@@ -48,11 +48,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
         console.log(newInvoice)
     }, [newInvoice])
 
-    const handleProductChange = (index: number, field: string, value: string) => {
-        const updatedProducts = [...newInvoice.products];
-        updatedProducts[index][field] = field === "price" || field === "quantity" ? parseFloat(value) : value;
-        setNewInvoice((prev: any) => ({ ...prev, products: updatedProducts }));
-    };
+
     const handleAddProduct = () => {
         const newProduct = { quantity: 1, name: "", unitPrice: 0 }
         setNewInvoice((prev: any) => ({
