@@ -234,7 +234,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                             <input type="number" value={item?.quantity} className='bg-white rounded-md px-2  ' onChange={(e) => handleProductChange(index, "quantity", e.target.value)} />
                                             <input type="text" value={item?.name} className='bg-white rounded-md px-2 ' onChange={(e) => handleProductChange(index, "name", e.target.value)} />
                                             <input type="number" value={item?.unitPrice} className='bg-white rounded-md px-2 ' onChange={(e) => handleProductChange(index, "unitPrice", e.target.value)} />
-                                            <div className='font-bold px-1 '>{!item.unitPrice ? "0.00" : (item?.unitPrice * item.quantity).toFixed(2)}$</div>
+                                            <div className='font-bold px-1 '>{!item.unitPrice ? "0.00" : (item?.unitPrice * item.quantity).toFixed(2)}</div>
                                             <div className='bg-[#ff8600] p-1 rounded-full w-fit cursor-pointer ' onClick={() => handleRemoveProduct(index)}>
                                                 <Trash2 />
                                             </div>

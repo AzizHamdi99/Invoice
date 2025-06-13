@@ -14,6 +14,7 @@ import {
 
 import { Switch } from "@/components/ui/switch"
 import { Value } from '@radix-ui/react-select';
+import { isEqual } from 'lodash';
 
 
 
@@ -26,7 +27,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
     const [invoice, setInvoice] = useState<any>(null)
     const [newInvoice, setNewInvoice] = useState<any>(null)
     const [loading, setLoading] = useState(false)
-    // const [hasChanged, setHasChanged] = useState(false)
+    const [hasChanged, setHasChanged] = useState(false)
 
     useEffect(() => {
         const fetchInvoice = async () => {
@@ -74,11 +75,11 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
         if (!invoice || !newInvoice) return;
         const changed = !isEqual(invoice, newInvoice); // now deep and safe
         setHasChanged(changed);
-    }, [invoice, newInvoice]);*/
+    }, [invoice, newInvoice]);
     useEffect(() => {
         console.log(newInvoice)
         console.log(invoice)
-    }, [newInvoice, invoice])
+    }, [newInvoice, invoice])*/
 
 
     const handleProductChange = (index: number, field: string, value: string) => {
@@ -99,15 +100,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
         updatedProducts.splice(index, 1);
         setNewInvoice((prev: any) => ({ ...prev, lines: updatedProducts }));
     };
-    const handleSave = async () => {
-        try {
-            await axios.put(`/api/updateInvoice/${invoiceId}`, newInvoice);
-            alert("Invoice updated!");
-        } catch (error) {
-            console.error("Save error:", error);
-            alert("Error saving invoice.");
-        }
-    };
+
 
 
     if (loading) {
@@ -137,8 +130,8 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 <SelectItem value="Cancelled">Cancelled</SelectItem>
                             </SelectContent>
                         </Select>
-                        <button className={`flex items-center gap-4 px-5 py-1 rounded-md font-medium bg-[#ff8600] cursor-pointer 
-                            }`} onClick={handleSave}>
+                        <button className={`flex items-center gap-4 px-5 py-1 rounded-md font-medium bg-[#ff8600] cursor-pointer ${!hasChanged ? "opacity-50 cursor-not-allowed" : ""
+                            }`} disabled={!hasChanged}>
                             <p>Save</p>
                             <Save size={20} />
                         </button>
@@ -152,8 +145,8 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
 
                 </div>
-                <div className='flex flex-col gap-3 md:flex md:flex-row my-5 md:justify-between '>
-                    <div className='flex flex-col gap-4 md:w-140'>
+                <div className='flex flex-col gap-3 md:flex md:flex-row my-5 '>
+                    <div className='flex flex-col gap-4'>
                         <div className='bg-[#eaeaea] p-5 rounded-md flex flex-col gap-2'>
                             <div className='flex items-center justify-between gap-4'>
                                 <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md font-semibold '>Summary of Totals</p>
@@ -199,20 +192,20 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         </div>
                         <div className='flex flex-col gap-5 p-5 bg-[#eaeaea] rounded-md'>
                             <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit font-semibold '>Issuer</p>
-                            <input type="text" placeholder='Company name' className='bg-white p-3 rounded-xl outline-none' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, seller: e.target.value }))} value={newInvoice?.seller} />
-                            <textarea name="" id="" placeholder='Company Address' className='bg-white p-3 rounded-md outline-none h-24' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, sellerCompany: e.target.value }))} value={newInvoice?.sellerCompany}></textarea>
+                            <input type="text" placeholder='Company name' className='bg-white p-3 rounded-xl outline-none' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, seller: e.target.value }))} />
+                            <textarea name="" id="" placeholder='Company Address' className='bg-white p-3 rounded-md outline-none h-24' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, sellerCompany: e.target.value }))}></textarea>
                             <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit  font-semibold' > Client</p>
-                            <input type="text" placeholder=' Client name' className='bg-white p-3 rounded-xl outline-none' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, buyer: e.target.value }))} value={newInvoice?.buyer} />
-                            <textarea name="" id="" placeholder='Client address' className='bg-white p-3 rounded-md outline-none h-24' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, buyerCompany: e.target.value }))} value={newInvoice?.buyerCompany}></textarea>
+                            <input type="text" placeholder=' Client name' className='bg-white p-3 rounded-xl outline-none' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, buyer: e.target.value }))} />
+                            <textarea name="" id="" placeholder='Client address' className='bg-white p-3 rounded-md outline-none h-24' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, buyerCompany: e.target.value }))}></textarea>
                             <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit  font-semibold'> Invoice Date</p>
-                            <input type="date" className='bg-white p-3 rounded-md' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, createdAt: e.target.value }))} value={newInvoice?.createdAt} />
+                            <input type="date" className='bg-white p-3 rounded-md' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, createdAt: e.target.value }))} />
                             <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit  font-semibold'> Due Date</p>
-                            <input type="date" className='bg-white p-3 rounded-md' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, dueDate: e.target.value }))} value={newInvoice?.dueDate} />
+                            <input type="date" className='bg-white p-3 rounded-md' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, dueDate: e.target.value }))} />
                         </div>
 
                     </div>
                     <div className='w-full'>
-                        <div className='flex flex-col gap-5 p-5 bg-[#eaeaea] rounded-md w-full py-10' >
+                        <div className='flex flex-col gap-5 p-5 bg-[#eaeaea] rounded-md w-full' >
                             <div className='flex items-center justify-between'>
                                 <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit  font-semibold'>Products / Services</p>
                                 <div className='bg-[#ff8600] rounded-md p-1 px-2 cursor-pointer' onClick={handleAddProduct}>
@@ -221,28 +214,26 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
                             </div>
                             <div className='flex flex-col gap-3 px-4'>
-                                <div className='grid grid-cols-5 gap-6 font-medium text-[#777978]'>
+                                <div className='grid grid-cols-5 gap-6'>
                                     <p>Quantity</p>
                                     <p>Description</p>
                                     <p>Unit Price</p>
                                     <p>SubTotal</p>
                                 </div>
-                                <div className='flex flex-col gap-4'>
-                                    {newInvoice?.lines.map((item: any, index: number) => (
-                                        <div key={index} className='grid grid-cols-5 gap-6'>
+                                {newInvoice?.lines.map((item: any, index: number) => (
+                                    <div key={index} className='grid grid-cols-5 gap-6'>
 
-                                            <input type="number" value={item?.quantity} className='bg-white rounded-md px-2  ' onChange={(e) => handleProductChange(index, "quantity", e.target.value)} />
-                                            <input type="text" value={item?.name} className='bg-white rounded-md px-2 ' onChange={(e) => handleProductChange(index, "name", e.target.value)} />
-                                            <input type="number" value={item?.unitPrice} className='bg-white rounded-md px-2 ' onChange={(e) => handleProductChange(index, "unitPrice", e.target.value)} />
-                                            <div className='font-bold px-1 '>{!item.unitPrice ? "0.00" : (item?.unitPrice * item.quantity).toFixed(2)}$</div>
-                                            <div className='bg-[#ff8600] p-1 rounded-full w-fit cursor-pointer ' onClick={() => handleRemoveProduct(index)}>
-                                                <Trash2 />
-                                            </div>
-
-
+                                        <input type="number" value={item?.quantity} className='bg-white rounded-md px-1 ' onChange={(e) => handleProductChange(index, "quantity", e.target.value)} />
+                                        <input type="text" value={item?.name} className='bg-white rounded-md px-1 ' onChange={(e) => handleProductChange(index, "name", e.target.value)} />
+                                        <input type="number" value={item?.unitPrice} className='bg-white rounded-md px-1 ' onChange={(e) => handleProductChange(index, "unitPrice", e.target.value)} />
+                                        <div className='bg-white rounded-md px-1 '>{!item.unitPrice ? "0.00" : (item?.unitPrice * item.quantity).toFixed(2)}</div>
+                                        <div className='bg-[#ff8600] p-1 rounded-full w-fit cursor-pointer ' onClick={() => handleRemoveProduct(index)}>
+                                            <Trash2 />
                                         </div>
-                                    ))}
-                                </div>
+
+
+                                    </div>
+                                ))}
 
                             </div>
 

@@ -99,7 +99,7 @@ const ListFactures = () => {
 
                 </div>
             case "Unpaid":
-                return <div className='flex items-center gap-1 px-4 rounded-xl bg-[#ff5962] w-fit'>
+                return <div className='flex items-center gap-1 px-4 rounded-xl bg-[#febf00] w-fit'>
                     <CircleX size={20} />
                     <p className='font-semibold' >Unpaid</p>
 
