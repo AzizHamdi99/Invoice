@@ -643,7 +643,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 className="flex gap-2 bg-[#ff8600] w-fit px-3 py-1 rounded-md font-medium cursor-pointer"
                                 onClick={printInvoice}
                             >
-                                Invoice PDF
+                                Print Invoice
                                 <ArrowDownFromLine size={20} />
                             </div>
 

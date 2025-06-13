@@ -15,8 +15,9 @@ const Navbar = () => {
 
             </Link>
             <div className='flex items-center gap-3'>
-                <p className='bg-[#ff8600] px-2 py-1 rounded-md font-semibold text-center text-sm'>Invoices</p>
-                <UserButton />
+                <Link className='bg-[#ff8600] px-2 py-1 rounded-md font-semibold text-center text-sm' href={"/"}>Invoices</Link>
+                <UserButton
+                    afterSignOutUrl='/sign-in' />
 
 
             </div>

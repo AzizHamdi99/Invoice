@@ -126,15 +126,16 @@ const ListFactures = () => {
 
     return (
         <div className='my-10 mx-32 '>
-            <p className='text-2xl font-bold'>My Invoices</p>
+            <p className='text-3xl font-bold'>My Invoices</p>
             <div className='flex flex-col md:grid grid-cols-2 lg:grid lg:grid-cols-3 mt-3 gap-6  '>
 
                 <Dialog>
                     <DialogTrigger asChild className='cursor-pointer'>
                         <Button className='h-full border-2 border-[#ff8600]  flex flex-col items-center justify-center  ' variant="outline">
-                            <p className='text-[#ff8600] text-xl'>Create Invoice</p>
-                            <Layers size={90} className=' bg-black text-[#f3aa47] rounded-full p-1' />
-
+                            <p className='text-[#ff8600] text-2xl'>Create Invoice</p>
+                            <div className=' bg-black text-[#f3aa47] rounded-full p-1'>
+                                <Layers size={200} />
+                            </div>
                         </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md">
