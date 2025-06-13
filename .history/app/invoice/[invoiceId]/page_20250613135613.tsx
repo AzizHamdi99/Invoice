@@ -13,15 +13,13 @@ import {
 } from "@/components/ui/select"
 
 import { Switch } from "@/components/ui/switch"
-import { Value } from '@radix-ui/react-select';
-import { isEqual } from '@/libs/utils';
 
 
 
 const details = ({ params }: { params: { invoiceId: string } }) => {
 
     const invoiceId = params.invoiceId;
-
+    console.log(invoiceId)
 
     const [invoice, setInvoice] = useState<any>(null)
     const [newInvoice, setNewInvoice] = useState<any>(null)
@@ -63,14 +61,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
         }));
 
 
-
-    }, [newInvoice?.lines, newInvoice?.tva, newInvoice?.activeTva])
-
-    useEffect(() => {
-        console.log(newInvoice)
-        console.log(invoice)
     }, [newInvoice])
-
 
     const handleProductChange = (index: number, field: string, value: string) => {
         const updatedProducts = [...newInvoice.lines];
@@ -91,7 +82,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
         setNewInvoice((prev: any) => ({ ...prev, lines: updatedProducts }));
     };
 
-    const hasChanged = isEqual(invoice, newInvoice)
 
     if (loading) {
         return (<div className="w-full flex justify-center items-center h-screen">
@@ -106,13 +96,11 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                 <div className='flex items-center justify-between'>
                     <p className='uppercase bg-[#eaeaea] px-3 font-normal rounded-xl'>invoice-{newInvoice?.id}</p>
                     <div className='flex items-center gap-2 md:gap-4'>
-                        <Select onValueChange={(value) =>
-                            setNewInvoice((prev: any) => ({ ...prev, status: value }))
-                        } value={newInvoice?.status}>
+                        <Select >
                             <SelectTrigger className="w-[100px] cursor-pointer">
                                 <SelectValue placeholder={newInvoice?.status} />
                             </SelectTrigger>
-                            <SelectContent >
+                            <SelectContent>
                                 <SelectItem value="Draft">Draft</SelectItem>
                                 <SelectItem value="Pending">Pending</SelectItem>
                                 <SelectItem value="Paid">Paid</SelectItem>
@@ -120,7 +108,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 <SelectItem value="Cancelled">Cancelled</SelectItem>
                             </SelectContent>
                         </Select>
-                        <button className='flex items-center gap-4 px-5 py-1 rounded-md font-medium bg-[#ff8600] cursor-pointer' disabled={!hasChanged}>
+                        <button className='flex items-center gap-4 px-5 py-1 rounded-md font-medium bg-[#ff8600] cursor-pointer'>
                             <p>Save</p>
                             <Save size={20} />
                         </button>
@@ -151,7 +139,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                         checked={newInvoice?.activeTva}
 
                                     />
-                                    {newInvoice?.activeTva && <input className='w-17 p-1 bg-white rounded-xl' type="number" onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, tva: parseFloat(e.target.value) }))} value={newInvoice?.tva} />}
+                                    {newInvoice?.activeTva && <input className='w-17 p-1 bg-white rounded-xl' type="number" onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, tva: parseFloat(e.target.value) }))} value={newInvoice.tva} />}
 
                                 </div>
                             </div>

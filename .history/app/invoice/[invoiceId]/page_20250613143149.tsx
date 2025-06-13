@@ -14,14 +14,13 @@ import {
 
 import { Switch } from "@/components/ui/switch"
 import { Value } from '@radix-ui/react-select';
-import { isEqual } from '@/libs/utils';
 
 
 
 const details = ({ params }: { params: { invoiceId: string } }) => {
 
     const invoiceId = params.invoiceId;
-
+    console.log(invoiceId)
 
     const [invoice, setInvoice] = useState<any>(null)
     const [newInvoice, setNewInvoice] = useState<any>(null)
@@ -68,7 +67,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
     useEffect(() => {
         console.log(newInvoice)
-        console.log(invoice)
     }, [newInvoice])
 
 
@@ -90,8 +88,10 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
         updatedProducts.splice(index, 1);
         setNewInvoice((prev: any) => ({ ...prev, lines: updatedProducts }));
     };
-
-    const hasChanged = isEqual(invoice, newInvoice)
+    const checkInvoice = () => {
+        return invoice.json
+    }
+    const haschanged = isEqual()
 
     if (loading) {
         return (<div className="w-full flex justify-center items-center h-screen">
@@ -120,7 +120,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 <SelectItem value="Cancelled">Cancelled</SelectItem>
                             </SelectContent>
                         </Select>
-                        <button className='flex items-center gap-4 px-5 py-1 rounded-md font-medium bg-[#ff8600] cursor-pointer' disabled={!hasChanged}>
+                        <button className='flex items-center gap-4 px-5 py-1 rounded-md font-medium bg-[#ff8600] cursor-pointer'>
                             <p>Save</p>
                             <Save size={20} />
                         </button>

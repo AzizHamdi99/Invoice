@@ -21,7 +21,7 @@ import { isEqual } from '@/libs/utils';
 const details = ({ params }: { params: { invoiceId: string } }) => {
 
     const invoiceId = params.invoiceId;
-
+    console.log(invoiceId)
 
     const [invoice, setInvoice] = useState<any>(null)
     const [newInvoice, setNewInvoice] = useState<any>(null)
@@ -68,7 +68,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
     useEffect(() => {
         console.log(newInvoice)
-        console.log(invoice)
     }, [newInvoice])
 
 

@@ -21,7 +21,7 @@ import { isEqual } from '@/libs/utils';
 const details = ({ params }: { params: { invoiceId: string } }) => {
 
     const invoiceId = params.invoiceId;
-
+    console.log(invoiceId)
 
     const [invoice, setInvoice] = useState<any>(null)
     const [newInvoice, setNewInvoice] = useState<any>(null)
@@ -68,7 +68,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
     useEffect(() => {
         console.log(newInvoice)
-        console.log(invoice)
     }, [newInvoice])
 
 
@@ -120,7 +119,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 <SelectItem value="Cancelled">Cancelled</SelectItem>
                             </SelectContent>
                         </Select>
-                        <button className='flex items-center gap-4 px-5 py-1 rounded-md font-medium bg-[#ff8600] cursor-pointer' disabled={!hasChanged}>
+                        <button className='flex items-center gap-4 px-5 py-1 rounded-md font-medium bg-[#ff8600] cursor-pointer' disabled={hasChanged}>
                             <p>Save</p>
                             <Save size={20} />
                         </button>
