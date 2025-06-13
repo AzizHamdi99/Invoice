@@ -212,13 +212,16 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         gap: 8px;
                     }
                     
-                       .logo-icon svg {
-                        width: 24px;
-                        height: 24px;
-                        stroke: #ff8600;
-                        fill: none;
-                        stroke-width: 2;
-                        background-color:black
+                    .logo-icon {
+                        width: 40px;
+                        height: 40px;
+                        background-color: #000000;
+                        color: #ff8600;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
                     }
                     
                     .company-name {
@@ -282,7 +285,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         color: #646568;
                         font-size: 18px;
                         width: fit-content;
-                        color: #ff8600;
                     }
                     
                     .party-name {
@@ -373,13 +375,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                     <div class="invoice-header">
                         <div>
                             <div class="logo-section">
-                                <div class="logo-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polygon points="12,2 2,7 12,12 22,7 12,2"></polygon>
-                                        <polyline points="2,17 12,22 22,17"></polyline>
-                                        <polyline points="2,12 12,17 22,12"></polyline>
-                                    </svg>
-                                </div>
+                                <div class="logo-icon"></div>
                                 <div class="company-name">
                                     In<span class="company-accent">Voice</span>
                                 </div>

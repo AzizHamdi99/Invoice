@@ -282,7 +282,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         color: #646568;
                         font-size: 18px;
                         width: fit-content;
-                        color: #ff8600;
                     }
                     
                     .party-name {

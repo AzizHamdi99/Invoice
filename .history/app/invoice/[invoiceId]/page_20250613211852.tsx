@@ -218,7 +218,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         stroke: #ff8600;
                         fill: none;
                         stroke-width: 2;
-                        background-color:black
                     }
                     
                     .company-name {
@@ -282,7 +281,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         color: #646568;
                         font-size: 18px;
                         width: fit-content;
-                        color: #ff8600;
                     }
                     
                     .party-name {

@@ -212,13 +212,16 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         gap: 8px;
                     }
                     
-                       .logo-icon svg {
-                        width: 24px;
-                        height: 24px;
-                        stroke: #ff8600;
-                        fill: none;
-                        stroke-width: 2;
-                        background-color:black
+                    .logo-icon {
+                        width: 40px;
+                        height: 40px;
+                        background-color: #000000;
+                        color: #ff8600;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
                     }
                     
                     .company-name {
@@ -282,7 +285,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         color: #646568;
                         font-size: 18px;
                         width: fit-content;
-                        color: #ff8600;
                     }
                     
                     .party-name {

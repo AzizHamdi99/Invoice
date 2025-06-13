@@ -145,11 +145,194 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
         }
     };
 
-    const printInvoice = () => {
+
+    // const downloadPDF = async () => {
+    //     const element = divRef.current;
+    //     if (!element) return;
+
+    //     try {
+    //         const canvas = await html2canvas(element, {
+    //             scale: 3,
+    //             useCORS: true,
+    //         });
+
+    //         const imgData = canvas.toDataURL('image/png'); // FIXED MIME type
+
+    //         const pdf = new jsPDF({
+    //             orientation: 'portrait',
+    //             unit: 'mm',
+    //             format: 'a4',
+    //         });
+
+    //         const pdfWidth = pdf.internal.pageSize.getWidth();
+    //         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    //         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    //         pdf.save(`invoice-${newInvoice?.title || 'document'}.pdf`);
+
+    //     } catch (error) {
+    //         console.error('❌ Error during PDF generation:', error);
+    //     }
+    // };
+
+
+
+    // const downloadPDF = async () => {
+    //     const element = divRef.current;
+    //     if (!element) {
+    //         console.error('PDF Element not found');
+    //         toast.error('PDF element not found');
+    //         return;
+    //     }
+
+    //     if (!newInvoice) {
+    //         console.error('Invoice data not available');
+    //         toast.error('Invoice data not available');
+    //         return;
+    //     }
+
+    //     console.log('Starting PDF generation...');
+
+    //     try {
+    //         // Show loading toast
+    //         const loadingToast = toast.loading('Generating PDF...');
+
+    //         // More conservative html2canvas options
+    //         const canvas = await html2canvas(element, {
+    //             scale: 1.5, // Reduced scale to avoid memory issues
+    //             useCORS: true,
+    //             allowTaint: true,
+    //             backgroundColor: '#ffffff',
+    //             removeContainer: true,
+    //             logging: false, // Disable logging to avoid console spam
+    //             width: element.scrollWidth,
+    //             height: element.scrollHeight,
+    //             onclone: (clonedDoc) => {
+    //                 console.log('Cloning document for PDF...');
+
+    //                 try {
+    //                     // Remove all external stylesheets
+    //                     const links = clonedDoc.querySelectorAll('link[rel="stylesheet"]');
+    //                     console.log(`Found ${links.length} stylesheets to remove`);
+    //                     links.forEach((link, index) => {
+    //                         console.log(`Removing stylesheet ${index + 1}: ${link.href}`);
+    //                         link.remove();
+    //                     });
+
+    //                     // Remove style tags that might contain problematic CSS
+    //                     const styles = clonedDoc.querySelectorAll('style');
+    //                     console.log(`Found ${styles.length} style tags`);
+    //                     styles.forEach((style, index) => {
+    //                         if (style.textContent) {
+    //                             // Check for problematic CSS functions
+    //                             const problematicFunctions = ['oklch', 'oklab', 'lch', 'lab'];
+    //                             const hasProblematicCSS = problematicFunctions.some(func =>
+    //                                 style.textContent.includes(func)
+    //                             );
+
+    //                             if (hasProblematicCSS) {
+    //                                 console.log(`Removing problematic style tag ${index + 1}`);
+    //                                 style.remove();
+    //                             }
+    //                         }
+    //                     });
+
+    //                     // Apply basic inline styles to maintain appearance
+    //                     const clonedElement = clonedDoc.body.querySelector('[data-pdf-content]') ||
+    //                         clonedDoc.body.firstElementChild;
+
+    //                     if (clonedElement) {
+    //                         clonedElement.style.fontFamily = 'Arial, sans-serif';
+    //                         clonedElement.style.color = '#000000';
+    //                         clonedElement.style.backgroundColor = '#ffffff';
+    //                         clonedElement.style.padding = '20px';
+
+    //                         // Apply basic styles to common elements
+    //                         const headers = clonedElement.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    //                         headers.forEach(header => {
+    //                             header.style.color = '#1a2028';
+    //                             header.style.fontWeight = 'bold';
+    //                         });
+
+    //                         // Style elements with specific classes if they exist
+    //                         const orangeElements = clonedElement.querySelectorAll('[class*="ff8600"], [style*="ff8600"]');
+    //                         orangeElements.forEach(el => {
+    //                             el.style.backgroundColor = '#ff8600';
+    //                             el.style.color = '#ffffff';
+    //                         });
+    //                     }
+
+    //                     console.log('Document cloning completed successfully');
+    //                 } catch (cloneError) {
+    //                     console.warn('Error during document cloning:', cloneError);
+    //                     // Continue anyway, as basic rendering might still work
+    //                 }
+    //             }
+    //         });
+
+    //         console.log('Canvas created successfully:', canvas.width, 'x', canvas.height);
+
+    //         // Check if canvas is valid
+    //         if (!canvas || canvas.width === 0 || canvas.height === 0) {
+    //             throw new Error('Invalid canvas generated');
+    //         }
+
+    //         const imgData = canvas.toDataURL('image/png');
+
+    //         if (!imgData || imgData === 'data:,') {
+    //             throw new Error('Failed to generate image data');
+    //         }
+
+    //         console.log('Image data generated successfully');
+
+    //         const pdf = new jsPDF({
+    //             orientation: 'portrait',
+    //             unit: 'mm',
+    //             format: 'a4',
+    //         });
+
+    //         const pdfWidth = pdf.internal.pageSize.getWidth();
+    //         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    //         console.log('PDF dimensions:', pdfWidth, 'x', pdfHeight);
+
+    //         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+    //         const fileName = `invoice-${newInvoice?.id || newInvoice?.title || Date.now()}.pdf`;
+    //         pdf.save(fileName);
+
+    //         // Dismiss loading toast and show success
+    //         toast.dismiss(loadingToast);
+    //         toast.success('PDF downloaded successfully!');
+
+    //         console.log('PDF generated and downloaded successfully');
+
+    //     } catch (error: any) {
+    //         console.error('❌ Detailed PDF generation error:', {
+    //             message: error.message,
+    //             stack: error.stack,
+    //             name: error.name
+    //         });
+
+    //         // Show specific error message based on error type
+    //         let errorMessage = 'Failed to generate PDF';
+
+    //         if (error.message.includes('oklch') || error.message.includes('color')) {
+    //             errorMessage = 'Color parsing error. Please try again.';
+    //         } else if (error.message.includes('canvas') || error.message.includes('Invalid canvas')) {
+    //             errorMessage = 'Failed to capture invoice content. Please try again.';
+    //         } else if (error.message.includes('image') || error.message.includes('toDataURL')) {
+    //             errorMessage = 'Failed to generate image. Please try again.';
+    //         }
+
+    //         toast.error(errorMessage);
+    //     }
+    // };
+    const downloadPDF = async () => {
         const element = divRef.current;
         if (!element) {
-            console.error('Print Element not found');
-            toast.error('Print element not found');
+            console.error('PDF Element not found');
+            toast.error('PDF element not found');
             return;
         }
 
@@ -159,329 +342,219 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
             return;
         }
 
-        try {
-            // Create a new window for printing
-            const printWindow = window.open('', '_blank');
+        console.log('Starting PDF generation...');
 
-            if (!printWindow) {
-                toast.error('Please allow pop-ups to print the invoice');
-                return;
+        try {
+            // Show loading toast
+            const loadingToast = toast.loading('Generating PDF...');
+
+            // More conservative html2canvas options
+            const canvas = await html2canvas(element, {
+                scale: 1.5,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                removeContainer: true,
+                logging: false,
+                width: element.scrollWidth,
+                height: element.scrollHeight,
+                onclone: (clonedDoc) => {
+                    console.log('Cloning document for PDF...');
+
+                    try {
+                        // Remove all external stylesheets
+                        const links = clonedDoc.querySelectorAll('link[rel="stylesheet"]');
+                        console.log(`Found ${links.length} stylesheets to remove`);
+                        links.forEach((link, index) => {
+                            console.log(`Removing stylesheet ${index + 1}: ${link.href}`);
+                            link.remove();
+                        });
+
+                        // Remove ALL style tags to prevent color function issues
+                        const styles = clonedDoc.querySelectorAll('style');
+                        console.log(`Found ${styles.length} style tags - removing all`);
+                        styles.forEach((style) => {
+                            style.remove();
+                        });
+
+                        // Fix date input values to prevent HTML validation warnings
+                        const dateInputs = clonedDoc.querySelectorAll('input[type="date"]');
+                        dateInputs.forEach(input => {
+                            if (input.value) {
+                                // Convert ISO string to YYYY-MM-DD format
+                                const date = new Date(input.value);
+                                if (!isNaN(date.getTime())) {
+                                    const year = date.getFullYear();
+                                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                                    const day = String(date.getDate()).padStart(2, '0');
+                                    input.value = `${year}-${month}-${day}`;
+                                }
+                            }
+                        });
+
+                        // Remove all existing inline styles that might contain problematic functions
+                        const allElements = clonedDoc.querySelectorAll('*');
+                        allElements.forEach(el => {
+                            if (el.style && el.style.cssText) {
+                                // Check if style contains problematic color functions
+                                const styleText = el.style.cssText;
+                                const problematicFunctions = ['oklch', 'oklab', 'lch', 'lab', 'color('];
+                                const hasProblematicCSS = problematicFunctions.some(func =>
+                                    styleText.toLowerCase().includes(func.toLowerCase())
+                                );
+
+                                if (hasProblematicCSS) {
+                                    el.removeAttribute('style');
+                                }
+                            }
+                        });
+
+                        // Apply comprehensive inline styles to maintain appearance
+                        const clonedElement = clonedDoc.body.querySelector('[data-pdf-content]') ||
+                            clonedDoc.body.firstElementChild;
+
+                        if (clonedElement) {
+                            // Base styles
+                            clonedElement.style.cssText = `
+                            font-family: Arial, sans-serif !important;
+                            color: #000000 !important;
+                            background-color: #ffffff !important;
+                            padding: 20px !important;
+                            line-height: 1.5 !important;
+                            font-size: 14px !important;
+                        `;
+
+                            // Style headers
+                            const headers = clonedElement.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                            headers.forEach(header => {
+                                header.style.cssText = `
+                                color: #1a2028 !important;
+                                font-weight: bold !important;
+                                margin: 10px 0 !important;
+                                font-family: Arial, sans-serif !important;
+                            `;
+                            });
+
+                            // Style paragraphs and text elements
+                            const textElements = clonedElement.querySelectorAll('p, span, div, label');
+                            textElements.forEach(el => {
+                                if (!el.style.cssText) {
+                                    el.style.cssText = `
+                                    color: #000000 !important;
+                                    font-family: Arial, sans-serif !important;
+                                `;
+                                }
+                            });
+
+                            // Style tables
+                            const tables = clonedElement.querySelectorAll('table');
+                            tables.forEach(table => {
+                                table.style.cssText = `
+                                border-collapse: collapse !important;
+                                width: 100% !important;
+                                margin: 10px 0 !important;
+                            `;
+                            });
+
+                            const tableCells = clonedElement.querySelectorAll('td, th');
+                            tableCells.forEach(cell => {
+                                cell.style.cssText = `
+                                border: 1px solid #ddd !important;
+                                padding: 8px !important;
+                                color: #000000 !important;
+                                font-family: Arial, sans-serif !important;
+                            `;
+                            });
+
+                            // Style buttons and form elements
+                            const buttons = clonedElement.querySelectorAll('button, input, select, textarea');
+                            buttons.forEach(btn => {
+                                btn.style.cssText = `
+                                background-color: #f5f5f5 !important;
+                                border: 1px solid #ccc !important;
+                                color: #000000 !important;
+                                font-family: Arial, sans-serif !important;
+                                padding: 5px 10px !important;
+                            `;
+                            });
+
+                            // Handle elements that might have orange/accent colors
+                            const potentialAccentElements = clonedElement.querySelectorAll('[class*="orange"], [class*="accent"], [class*="primary"]');
+                            potentialAccentElements.forEach(el => {
+                                el.style.cssText += `
+                                background-color: #ff8600 !important;
+                                color: #ffffff !important;
+                                border-color: #ff8600 !important;
+                            `;
+                            });
+                        }
+
+                        console.log('Document cloning completed successfully');
+                    } catch (cloneError) {
+                        console.warn('Error during document cloning:', cloneError);
+                        // Continue anyway, as basic rendering might still work
+                    }
+                }
+            });
+
+            console.log('Canvas created successfully:', canvas.width, 'x', canvas.height);
+
+            // Check if canvas is valid
+            if (!canvas || canvas.width === 0 || canvas.height === 0) {
+                throw new Error('Invalid canvas generated');
             }
 
-            // Get the HTML content of the invoice
-            const invoiceContent = element.innerHTML;
+            const imgData = canvas.toDataURL('image/png');
 
-            // Create the print document
-            const printDocument = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="utf-8">
-                <title>Invoice - ${newInvoice?.id || 'N/A'}</title>
-                <style>
-                    * {
-                        margin: 0;
-                        padding: 0;
-                        box-sizing: border-box;
-                    }
-                    
-                    body {
-                        font-family: Arial, sans-serif;
-                        line-height: 1.5;
-                        color: #000000;
-                        background: white;
-                        padding: 20px;
-                    }
-                    
-                    .print-container {
-                        max-width: 800px;
-                        margin: 0 auto;
-                    }
-                    
-                    /* Header styles */
-                    .invoice-header {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        margin-bottom: 30px;
-                    }
-                    
-                    .logo-section {
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                    }
-                    
-                       .logo-icon svg {
-                        width: 24px;
-                        height: 24px;
-                        stroke: #ff8600;
-                        fill: none;
-                        stroke-width: 2;
-                        background-color:black
-                    }
-                    
-                    .company-name {
-                        font-size: 24px;
-                        font-weight: bold;
-                        font-style: italic;
-                    }
-                    
-                    .company-accent {
-                        color: #ff8600;
-                    }
-                    
-                    .invoice-title {
-                        font-size: 48px;
-                        font-weight: bold;
-                        color: #1a2028;
-                        text-transform: uppercase;
-                        margin-top: 10px;
-                    }
-                    
-                    .invoice-details {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                        align-items: flex-end;
-                    }
-                    
-                    .invoice-number {
-                        background-color: #e7e7e7;
-                        padding: 4px 8px;
-                        border-radius: 12px;
-                        font-size: 14px;
-                    }
-                    
-                    .date-info {
-                        font-size: 16px;
-                    }
-                    
-                    .date-label {
-                        font-weight: bold;
-                        color: #222328;
-                    }
-                    
-                    /* Parties section */
-                    .parties-section {
-                        display: flex;
-                        justify-content: space-between;
-                        margin-bottom: 30px;
-                    }
-                    
-                    .party-info {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                    }
-                    
-                    .party-label {
-                        background-color: #e7e7e7;
-                        padding: 0px
-                        border-radius: 12px;
-                        color: #646568;
-                        font-size: 18px;
-                        width: fit-content;
-                        color: #ff8600;
-                    }
-                    
-                    .party-name {
-                        font-weight: bold;
-                        font-size: 16px;
-                        color: #222328;
-                    }
-                    
-                    .party-company {
-                        color: #8a8b8b;
-                    }
-                    
-                    /* Table styles */
-                    .invoice-table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        margin-bottom: 30px;
-                    }
-                    
-                    .table-header {
-                        border-bottom: 1px solid #ccc;
-                        padding: 12px;
-                        font-weight: bold;
-                        color: #7c8080;
-                        text-align: left;
-                    }
-                    
-                    .table-cell {
-                        padding: 12px;
-                        color: #656565;
-                        font-weight: 500;
-                    }
-                    
-                    .table-row-even {
-                        background-color: #f9f9f9;
-                    }
-                    
-                    /* Totals section */
-                    .totals-section {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        margin-top: 20px;
-                    }
-                    
-                    .totals-labels {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                        font-weight: bold;
-                        font-size: 16px;
-                    }
-                    
-                    .totals-values {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                        font-size: 16px;
-                        font-weight: 600;
-                        text-align: right;
-                    }
-                    
-                    .total-final {
-                        background-color: #ff8600;
-                        color: white;
-                        padding:0px;
-                        border-radius: 12px;
-                    }
-                    
-                    /* Print-specific styles */
-                    @media print {
-                        body {
-                            padding: 0;
-                        }
-                        
-                        .print-container {
-                            max-width: none;
-                        }
-                        
-                        .invoice-title {
-                            font-size: 36px;
-                        }
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="print-container">
-                    <div class="invoice-header">
-                        <div>
-                            <div class="logo-section">
-                                <div class="logo-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polygon points="12,2 2,7 12,12 22,7 12,2"></polygon>
-                                        <polyline points="2,17 12,22 22,17"></polyline>
-                                        <polyline points="2,12 12,17 22,12"></polyline>
-                                    </svg>
-                                </div>
-                                <div class="company-name">
-                                    In<span class="company-accent">Voice</span>
-                                </div>
-                            </div>
-                            <div class="invoice-title">Invoice</div>
-                        </div>
-                        <div class="invoice-details">
-                            <div class="invoice-number">invoice°${newInvoice?.id || 'N/A'}</div>
-                            <div class="date-info">
-                                <span class="date-label">Date:</span> ${newInvoice?.createdAt ? formatDate(newInvoice?.createdAt) : "Invalid date"}
-                            </div>
-                            <div class="date-info">
-                                <span class="date-label">Due date:</span> ${newInvoice?.dueDate ? formatDate(newInvoice?.dueDate) : "Invalid date"}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="parties-section">
-                        <div class="party-info">
-                            <div class="party-label">Issuer</div>
-                            <div class="party-name">${newInvoice?.seller || 'N/A'}</div>
-                            <div class="party-company">${newInvoice?.sellerCompany || ''}</div>
-                        </div>
-                        <div class="party-info" style="align-items: flex-end;">
-                            <div class="party-label">Client</div>
-                            <div class="party-name">${newInvoice?.buyer || 'N/A'}</div>
-                            <div class="party-company">${newInvoice?.buyerCompany || ''}</div>
-                        </div>
-                    </div>
-                    
-                    <table class="invoice-table">
-                        <thead>
-                            <tr>
-                                <th class="table-header" style="width: 10%;">#</th>
-                                <th class="table-header" style="width: 30%;">Description</th>
-                                <th class="table-header" style="width: 20%;">Quantity</th>
-                                <th class="table-header" style="width: 20%;">Unit Price</th>
-                                <th class="table-header" style="width: 20%;">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${newInvoice?.lines?.map((item, i) => `
-                                <tr class="${i % 2 !== 0 ? 'table-row-even' : ''}">
-                                    <td class="table-cell">${i + 1}</td>
-                                    <td class="table-cell">${item?.name || 'N/A'}</td>
-                                    <td class="table-cell">${item?.quantity || '0'}</td>
-                                    <td class="table-cell">${item?.unitPrice || '0.00'}</td>
-                                    <td class="table-cell">${!item.unitPrice ? "0.00" : (item?.unitPrice * item.quantity).toFixed(2)}$</td>
-                                </tr>
-                            `).join('') || '<tr><td colspan="5" class="table-cell">No items</td></tr>'}
-                        </tbody>
-                    </table>
-                    
-                    <div class="totals-section">
-                        <div class="totals-labels">
-                            <div>Total Excl. Tax</div>
-                            <div>VAT(${newInvoice?.tva || 0}%)</div>
-                            <div>Total Incl. Tax</div>
-                        </div>
-                        <div class="totals-values">
-                            <div>${newInvoice?.net || '0.00'}$</div>
-                            <div>
-                                ${newInvoice?.activeTva
-                    ? (parseFloat(newInvoice?.net || 0) * (newInvoice?.tva || 0) / 100).toFixed(2)
-                    : "0.00"}$
-                            </div>
-                            <div class="total-final">${newInvoice?.total || '0.00'}$</div>
-                        </div>
-                    </div>
-                </div>
-            </body>
-            </html>
-        `;
+            if (!imgData || imgData === 'data:,') {
+                throw new Error('Failed to generate image data');
+            }
 
-            // Write the document to the new window
-            printWindow.document.write(printDocument);
-            printWindow.document.close();
+            console.log('Image data generated successfully');
 
-            // Wait for the document to load, then print
-            printWindow.onload = () => {
-                setTimeout(() => {
-                    printWindow.print();
-                    // Close the window after printing (optional)
-                    printWindow.onafterprint = () => {
-                        printWindow.close();
-                    };
-                }, 500);
-            };
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4',
+            });
 
-            toast.success('Print dialog opened!');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-        } catch (error) {
-            console.error('Print error:', error);
-            toast.error('Failed to open print dialog');
+            console.log('PDF dimensions:', pdfWidth, 'x', pdfHeight);
+
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+            const fileName = `invoice-${newInvoice?.id || newInvoice?.title || Date.now()}.pdf`;
+            pdf.save(fileName);
+
+            // Dismiss loading toast and show success
+            toast.dismiss(loadingToast);
+            toast.success('PDF downloaded successfully!');
+
+            console.log('PDF generated and downloaded successfully');
+
+        } catch (error: any) {
+            console.error('❌ Detailed PDF generation error:', {
+                message: error.message,
+                stack: error.stack,
+                name: error.name
+            });
+
+            // Show specific error message based on error type
+            let errorMessage = 'Failed to generate PDF';
+
+            if (error.message.includes('oklch') || error.message.includes('color')) {
+                errorMessage = 'Color parsing error. Please try again.';
+            } else if (error.message.includes('canvas') || error.message.includes('Invalid canvas')) {
+                errorMessage = 'Failed to capture invoice content. Please try again.';
+            } else if (error.message.includes('image') || error.message.includes('toDataURL')) {
+                errorMessage = 'Failed to generate image. Please try again.';
+            }
+
+            toast.error(errorMessage);
         }
     };
-
-
-
-
-
-
 
     if (loading) {
         return (<div className="w-full flex justify-center items-center h-screen">
@@ -641,7 +714,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         <div className="p-5 border-2 border-dashed flex flex-col gap-4 rounded-md bg-[#ffffff] text-[#000000]">
                             <div
                                 className="flex gap-2 bg-[#ff8600] w-fit px-3 py-1 rounded-md font-medium cursor-pointer"
-                                onClick={printInvoice}
+                                onClick={downloadPDF}
                             >
                                 Invoice PDF
                                 <ArrowDownFromLine size={20} />

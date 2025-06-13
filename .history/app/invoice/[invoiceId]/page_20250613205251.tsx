@@ -145,342 +145,87 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
         }
     };
 
-    const printInvoice = () => {
-        const element = divRef.current;
-        if (!element) {
-            console.error('Print Element not found');
-            toast.error('Print element not found');
-            return;
-        }
 
-        if (!newInvoice) {
-            console.error('Invoice data not available');
-            toast.error('Invoice data not available');
-            return;
-        }
+    // const downloadPDF = async () => {
+    //     const element = divRef.current;
+    //     if (!element) return;
+
+    //     try {
+    //         const canvas = await html2canvas(element, {
+    //             scale: 3,
+    //             useCORS: true,
+    //         });
+
+    //         const imgData = canvas.toDataURL('image/png'); // FIXED MIME type
+
+    //         const pdf = new jsPDF({
+    //             orientation: 'portrait',
+    //             unit: 'mm',
+    //             format: 'a4',
+    //         });
+
+    //         const pdfWidth = pdf.internal.pageSize.getWidth();
+    //         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    //         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    //         pdf.save(`invoice-${newInvoice?.title || 'document'}.pdf`);
+
+    //     } catch (error) {
+    //         console.error('❌ Error during PDF generation:', error);
+    //     }
+    // };
+    const downloadPDF = async () => {
+        const element = divRef.current;
+        if (!element) return;
 
         try {
-            // Create a new window for printing
-            const printWindow = window.open('', '_blank');
-
-            if (!printWindow) {
-                toast.error('Please allow pop-ups to print the invoice');
-                return;
-            }
-
-            // Get the HTML content of the invoice
-            const invoiceContent = element.innerHTML;
-
-            // Create the print document
-            const printDocument = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="utf-8">
-                <title>Invoice - ${newInvoice?.id || 'N/A'}</title>
-                <style>
-                    * {
-                        margin: 0;
-                        padding: 0;
-                        box-sizing: border-box;
-                    }
-                    
-                    body {
-                        font-family: Arial, sans-serif;
-                        line-height: 1.5;
-                        color: #000000;
-                        background: white;
-                        padding: 20px;
-                    }
-                    
-                    .print-container {
-                        max-width: 800px;
-                        margin: 0 auto;
-                    }
-                    
-                    /* Header styles */
-                    .invoice-header {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        margin-bottom: 30px;
-                    }
-                    
-                    .logo-section {
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                    }
-                    
-                       .logo-icon svg {
-                        width: 24px;
-                        height: 24px;
-                        stroke: #ff8600;
-                        fill: none;
-                        stroke-width: 2;
-                        background-color:black
-                    }
-                    
-                    .company-name {
-                        font-size: 24px;
-                        font-weight: bold;
-                        font-style: italic;
-                    }
-                    
-                    .company-accent {
-                        color: #ff8600;
-                    }
-                    
-                    .invoice-title {
-                        font-size: 48px;
-                        font-weight: bold;
-                        color: #1a2028;
-                        text-transform: uppercase;
-                        margin-top: 10px;
-                    }
-                    
-                    .invoice-details {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                        align-items: flex-end;
-                    }
-                    
-                    .invoice-number {
-                        background-color: #e7e7e7;
-                        padding: 4px 8px;
-                        border-radius: 12px;
-                        font-size: 14px;
-                    }
-                    
-                    .date-info {
-                        font-size: 16px;
-                    }
-                    
-                    .date-label {
-                        font-weight: bold;
-                        color: #222328;
-                    }
-                    
-                    /* Parties section */
-                    .parties-section {
-                        display: flex;
-                        justify-content: space-between;
-                        margin-bottom: 30px;
-                    }
-                    
-                    .party-info {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                    }
-                    
-                    .party-label {
-                        background-color: #e7e7e7;
-                        padding: 0px
-                        border-radius: 12px;
-                        color: #646568;
-                        font-size: 18px;
-                        width: fit-content;
-                        color: #ff8600;
-                    }
-                    
-                    .party-name {
-                        font-weight: bold;
-                        font-size: 16px;
-                        color: #222328;
-                    }
-                    
-                    .party-company {
-                        color: #8a8b8b;
-                    }
-                    
-                    /* Table styles */
-                    .invoice-table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        margin-bottom: 30px;
-                    }
-                    
-                    .table-header {
-                        border-bottom: 1px solid #ccc;
-                        padding: 12px;
-                        font-weight: bold;
-                        color: #7c8080;
-                        text-align: left;
-                    }
-                    
-                    .table-cell {
-                        padding: 12px;
-                        color: #656565;
-                        font-weight: 500;
-                    }
-                    
-                    .table-row-even {
-                        background-color: #f9f9f9;
-                    }
-                    
-                    /* Totals section */
-                    .totals-section {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        margin-top: 20px;
-                    }
-                    
-                    .totals-labels {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                        font-weight: bold;
-                        font-size: 16px;
-                    }
-                    
-                    .totals-values {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                        font-size: 16px;
-                        font-weight: 600;
-                        text-align: right;
-                    }
-                    
-                    .total-final {
-                        background-color: #ff8600;
-                        color: white;
-                        padding:0px;
-                        border-radius: 12px;
-                    }
-                    
-                    /* Print-specific styles */
-                    @media print {
-                        body {
-                            padding: 0;
+            const canvas = await html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                ignoreElements: (element) => {
+                    // Ignore elements with problematic CSS
+                    return element.classList.contains('ignore-pdf');
+                },
+                onclone: (clonedDoc) => {
+                    // Remove any problematic CSS that might contain oklch colors
+                    const styles = clonedDoc.querySelectorAll('style');
+                    styles.forEach(style => {
+                        if (style.textContent && style.textContent.includes('oklch')) {
+                            style.remove();
                         }
-                        
-                        .print-container {
-                            max-width: none;
+                    });
+
+                    // Also remove any external stylesheets that might contain oklch
+                    const links = clonedDoc.querySelectorAll('link[rel="stylesheet"]');
+                    links.forEach(link => {
+                        if (link.href.includes('tailwind') || link.href.includes('cdn')) {
+                            link.remove();
                         }
-                        
-                        .invoice-title {
-                            font-size: 36px;
-                        }
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="print-container">
-                    <div class="invoice-header">
-                        <div>
-                            <div class="logo-section">
-                                <div class="logo-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polygon points="12,2 2,7 12,12 22,7 12,2"></polygon>
-                                        <polyline points="2,17 12,22 22,17"></polyline>
-                                        <polyline points="2,12 12,17 22,12"></polyline>
-                                    </svg>
-                                </div>
-                                <div class="company-name">
-                                    In<span class="company-accent">Voice</span>
-                                </div>
-                            </div>
-                            <div class="invoice-title">Invoice</div>
-                        </div>
-                        <div class="invoice-details">
-                            <div class="invoice-number">invoice°${newInvoice?.id || 'N/A'}</div>
-                            <div class="date-info">
-                                <span class="date-label">Date:</span> ${newInvoice?.createdAt ? formatDate(newInvoice?.createdAt) : "Invalid date"}
-                            </div>
-                            <div class="date-info">
-                                <span class="date-label">Due date:</span> ${newInvoice?.dueDate ? formatDate(newInvoice?.dueDate) : "Invalid date"}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="parties-section">
-                        <div class="party-info">
-                            <div class="party-label">Issuer</div>
-                            <div class="party-name">${newInvoice?.seller || 'N/A'}</div>
-                            <div class="party-company">${newInvoice?.sellerCompany || ''}</div>
-                        </div>
-                        <div class="party-info" style="align-items: flex-end;">
-                            <div class="party-label">Client</div>
-                            <div class="party-name">${newInvoice?.buyer || 'N/A'}</div>
-                            <div class="party-company">${newInvoice?.buyerCompany || ''}</div>
-                        </div>
-                    </div>
-                    
-                    <table class="invoice-table">
-                        <thead>
-                            <tr>
-                                <th class="table-header" style="width: 10%;">#</th>
-                                <th class="table-header" style="width: 30%;">Description</th>
-                                <th class="table-header" style="width: 20%;">Quantity</th>
-                                <th class="table-header" style="width: 20%;">Unit Price</th>
-                                <th class="table-header" style="width: 20%;">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${newInvoice?.lines?.map((item, i) => `
-                                <tr class="${i % 2 !== 0 ? 'table-row-even' : ''}">
-                                    <td class="table-cell">${i + 1}</td>
-                                    <td class="table-cell">${item?.name || 'N/A'}</td>
-                                    <td class="table-cell">${item?.quantity || '0'}</td>
-                                    <td class="table-cell">${item?.unitPrice || '0.00'}</td>
-                                    <td class="table-cell">${!item.unitPrice ? "0.00" : (item?.unitPrice * item.quantity).toFixed(2)}$</td>
-                                </tr>
-                            `).join('') || '<tr><td colspan="5" class="table-cell">No items</td></tr>'}
-                        </tbody>
-                    </table>
-                    
-                    <div class="totals-section">
-                        <div class="totals-labels">
-                            <div>Total Excl. Tax</div>
-                            <div>VAT(${newInvoice?.tva || 0}%)</div>
-                            <div>Total Incl. Tax</div>
-                        </div>
-                        <div class="totals-values">
-                            <div>${newInvoice?.net || '0.00'}$</div>
-                            <div>
-                                ${newInvoice?.activeTva
-                    ? (parseFloat(newInvoice?.net || 0) * (newInvoice?.tva || 0) / 100).toFixed(2)
-                    : "0.00"}$
-                            </div>
-                            <div class="total-final">${newInvoice?.total || '0.00'}$</div>
-                        </div>
-                    </div>
-                </div>
-            </body>
-            </html>
-        `;
+                    });
+                }
+            });
 
-            // Write the document to the new window
-            printWindow.document.write(printDocument);
-            printWindow.document.close();
+            const imgData = canvas.toDataURL('image/png');
 
-            // Wait for the document to load, then print
-            printWindow.onload = () => {
-                setTimeout(() => {
-                    printWindow.print();
-                    // Close the window after printing (optional)
-                    printWindow.onafterprint = () => {
-                        printWindow.close();
-                    };
-                }, 500);
-            };
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4',
+            });
 
-            toast.success('Print dialog opened!');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`invoice-${newInvoice?.title || 'document'}.pdf`);
 
         } catch (error) {
-            console.error('Print error:', error);
-            toast.error('Failed to open print dialog');
+            console.error('❌ Error during PDF generation:', error);
+            toast.error('Failed to generate PDF. Please try again.');
         }
     };
-
-
-
-
-
 
 
     if (loading) {
@@ -641,13 +386,13 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         <div className="p-5 border-2 border-dashed flex flex-col gap-4 rounded-md bg-[#ffffff] text-[#000000]">
                             <div
                                 className="flex gap-2 bg-[#ff8600] w-fit px-3 py-1 rounded-md font-medium cursor-pointer"
-                                onClick={printInvoice}
+                                onClick={downloadPDF}
                             >
                                 Invoice PDF
                                 <ArrowDownFromLine size={20} />
                             </div>
 
-                            <div className="flex flex-col gap-5 px-5" ref={divRef} data-pdf-content="true">
+                            <div className="flex flex-col gap-5 px-5" ref={divRef}>
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <div className="flex items-center gap-2 italic">
