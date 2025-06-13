@@ -31,9 +31,7 @@ import { formatDate } from '@/libs/utils';
 
 import { useRef } from 'react';
 
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-
+import html2canvas from "html2canvas-pro"
 
 
 
@@ -149,32 +147,18 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
     const downloadPDF = async () => {
         const element = divRef.current;
         if (!element) return;
+        if (element) {
+            try {
+                const canvas = await html2canvas(element, { scale: 3, useCors: true })
+                const iam
 
-        try {
-            const canvas = await html2canvas(element, {
-                scale: 3,
-                useCORS: true,
-            });
+            } catch (error) {
+                console.log("error in generation of the pdf", error)
 
-            const imgData = canvas.toDataURL('image/png'); // FIXED MIME type
-
-            const pdf = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4',
-            });
-
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`invoice-${newInvoice?.title || 'document'}.pdf`);
-
-        } catch (error) {
-            console.error('❌ Error during PDF generation:', error);
+            }
         }
-    };
 
+    };
 
     if (loading) {
         return (<div className="w-full flex justify-center items-center h-screen">
@@ -331,102 +315,92 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
 
                         </div>
-                        <div className="p-5 border-2 border-dashed flex flex-col gap-4 rounded-md bg-[#ffffff] text-[#000000]">
-                            <div
-                                className="flex gap-2 bg-[#ff8600] w-fit px-3 py-1 rounded-md font-medium cursor-pointer"
-                                onClick={downloadPDF}
-                            >
+                        <div className='p-5 border-2 border-dashed flex flex-col gap-4 rounded-md'>
+                            <div className='flex gap-2 bg-[#ff8600] w-fit px-3 py-1 rounded-md font-medium cursor-pointer' onClick={downloadPDF}>
                                 Invoice PDF
                                 <ArrowDownFromLine size={20} />
+
                             </div>
-
-                            <div className="flex flex-col gap-5 px-5" ref={divRef}>
-                                <div className="flex items-center justify-between">
+                            <div className='flex flex-col gap-5 px-5' ref={divRef} >
+                                <div className='flex items-center justify-between'>
                                     <div>
-                                        <div className="flex items-center gap-2 italic">
-                                            <Layers size={40} className="bg-[#000000] text-[#ff8600] rounded-full p-1" />
-                                            <p className="text-2xl font-bold">
-                                                In<span className="text-[#ff8600]">Voice</span>
-                                            </p>
+                                        <div className='flex items-center gap-2 italic'>
+                                            <Layers size={40} className=' bg-black text-[#ff8600] rounded-full p-1' />
+                                            <p className='text-2xl font-bold'>In<span className=' text-[#ff8600]'>Voice</span></p>
+
+
                                         </div>
-                                        <p className="uppercase text-6xl font-bold text-[#1a2028]">Invoice</p>
+                                        <p className='uppercase text-6xl font-bold text-[#1a2028]'>INvoice </p>
+                                    </div>
+                                    <div className='uppercase flex flex-col gap-1.5 '>
+                                        <p className='bg-[#e7e7e7] px-2 py-0.5 rounded-xl w-fit'>invoice°{newInvoice?.id}</p>
+                                        <p className='text-[18px]'><span className='text-[#222328] font-bold'>Date:</span> {newInvoice?.createdAt ? formatDate(newInvoice?.createdAt) : "Invlide date"}</p>
+                                        <p className='text-[18px]'> <span className='text-[#222328] font-bold'> Due date: </span>{newInvoice?.dueDate ? formatDate(newInvoice?.dueDate) : "Invlide date"}</p>
+
                                     </div>
 
-                                    <div className="uppercase flex flex-col gap-1.5 items-end">
-                                        <p className="bg-[#e7e7e7] px-2 py-0.5 rounded-xl w-fit text-[#000000]">
-                                            invoice°{newInvoice?.id}
-                                        </p>
-                                        <p className="text-[18px]">
-                                            <span className="text-[#222328] font-bold">Date:</span>{" "}
-                                            {newInvoice?.createdAt ? formatDate(newInvoice?.createdAt) : "Invalid date"}
-                                        </p>
-                                        <p className="text-[18px]">
-                                            <span className="text-[#222328] font-bold">Due date:</span>{" "}
-                                            {newInvoice?.dueDate ? formatDate(newInvoice?.dueDate) : "Invalid date"}
-                                        </p>
-                                    </div>
+
+
                                 </div>
+                                <div className='flex items-center justify-between'>
+                                    <div className='flex flex-col  gap-1.5 items-start'>
+                                        <p className='bg-[#e7e7e7] px-4 py-0.5 rounded-xl w-fit text-[#646568]'>Issuer</p>
+                                        <p className='text-[#222328] font-bold text-[18px]'>{newInvoice?.seller}</p>
+                                        <p className='text-[#8a8b8b]'>{newInvoice?.sellerCompany}</p>
 
-                                <div className="flex items-center justify-between">
-                                    <div className="flex flex-col gap-1.5 items-start">
-                                        <p className="bg-[#e7e7e7] px-4 py-0.5 rounded-xl w-fit text-[#646568]">Issuer</p>
-                                        <p className="text-[#222328] font-bold text-[18px]">{newInvoice?.seller}</p>
-                                        <p className="text-[#8a8b8b]">{newInvoice?.sellerCompany}</p>
+                                    </div>
+                                    <div className='flex flex-col gap-1.5 items-end'>
+                                        <p className='bg-[#e7e7e7] px-4 py-0.5 rounded-xl w-fit text-[#646568]'>Client</p>
+                                        <p className='text-[#222328] font-bold text-[18px]'>{newInvoice?.buyer}</p>
+                                        <p className='text-[#8a8b8b]'>{newInvoice?.buyerCompany}</p>
+
                                     </div>
 
-                                    <div className="flex flex-col gap-1.5 items-end">
-                                        <p className="bg-[#e7e7e7] px-4 py-0.5 rounded-xl w-fit text-[#646568]">Client</p>
-                                        <p className="text-[#222328] font-bold text-[18px]">{newInvoice?.buyer}</p>
-                                        <p className="text-[#8a8b8b]">{newInvoice?.buyerCompany}</p>
-                                    </div>
                                 </div>
-
-                                <div className="flex flex-col gap-3">
-                                    <div className="grid grid-cols-[1fr_2fr_2fr_2fr_2fr] border-b-[1px] p-3 text-[#7c8080] font-semibold">
-                                        <p className="text-transparent">.</p>
+                                <div className='flex flex-col gap-3'>
+                                    <div className='grid grid-cols-[1fr_2fr_2fr_2fr_2fr] border-b-[1px] p-3 text-[#7c8080] font-semibold'>
+                                        <p className='bg-white text-white'>.</p>
                                         <p>Description</p>
                                         <p>Quantity</p>
                                         <p>Unit Price</p>
                                         <p>Total</p>
-                                    </div>
 
-                                    <div className="flex flex-col gap-2">
+                                    </div>
+                                    <div className='flex flex-col gap-2'>
                                         {newInvoice?.lines?.map((item: any, i: number) => (
-                                            <div
-                                                key={i}
-                                                className={`grid grid-cols-[1fr_2fr_2fr_2fr_2fr] p-3 text-[#656565] font-medium ${i % 2 !== 0 ? "bg-[#d9d9d9]" : "bg-[#ffffff]"
-                                                    }`}
-                                            >
+                                            <div key={i} className={`grid grid-cols-[1fr_2fr_2fr_2fr_2fr] p-3 text-[#656565] font-medium ${i % 2 !== 0 ? "bg-[#d9d9d9]" : "bg-white"}`}>
                                                 <p>{i + 1}</p>
                                                 <p>{item?.name}</p>
                                                 <p>{item?.quantity}</p>
                                                 <p>{item?.unitPrice}</p>
                                                 <p>{!item.unitPrice ? "0.00" : (item?.unitPrice * item.quantity).toFixed(2)}$</p>
+
+
                                             </div>
                                         ))}
                                     </div>
-                                </div>
 
-                                <div className="flex items-center justify-between my-4">
-                                    <div className="font-bold text-[18px] flex flex-col gap-2">
+
+                                </div>
+                                <div className='flex items-center justify-between my-4'>
+                                    <div className='font-bold text-[18px] flex flex-col gap-2'>
                                         <p>Total Excl. Tax</p>
                                         <p>VAT({newInvoice?.tva}%)</p>
-                                        <p>Total Incl. Tax</p>
+                                        <p>Total Incl.Tax</p>
+
                                     </div>
-                                    <div className="flex flex-col gap-2 text-[18px] font-semibold items-center">
+                                    <div className='flex flex-col gap-2 text-[18px] font-semibold items-center'>
                                         <p>{newInvoice?.net}$</p>
-                                        <p>
-                                            {newInvoice?.activeTva
-                                                ? (parseFloat(newInvoice?.net || 0) * (newInvoice?.tva || 0) / 100).toFixed(2)
-                                                : "0.00"}{" "}
-                                            $
-                                        </p>
-                                        <p className="bg-[#ff8600] rounded-xl px-2">{newInvoice?.total}$</p>
+                                        <p>{newInvoice?.activeTva
+                                            ? (parseFloat(newInvoice?.net || 0) * (newInvoice?.tva || 0) / 100).toFixed(2)
+                                            : "0.00"} $</p>
+                                        <p className='bg-[#ff8600] rounded-xl px-2'>{newInvoice?.total}$</p>
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -437,5 +411,8 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
     )
 }
 
-
 export default details
+function html2canvas(element: HTMLDivElement) {
+    throw new Error('Function not implemented.');
+}
+
