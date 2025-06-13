@@ -125,7 +125,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                         checked={newInvoice?.activeTva}
 
                                     />
-                                    {newInvoice?.activeTva && <input className='w-17 p-1 bg-white rounded-xl' type="number" onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, tva: parseFloat(e.target.value) }))} value={newInvoice.tva} />}
+                                    {newInvoice?.activeTva && <input className='w-17 p-1 bg-white rounded-xl' type="number" onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, tva: e.target.value }))} value={newInvoice.tva} />}
 
                                 </div>
                             </div>
@@ -136,11 +136,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 </div>
                                 <div className='flex items-center justify-between'>
                                     <p>VAT({newInvoice?.tva ?? 0}%)</p>
-                                    <p>
-                                        {newInvoice?.activeTva
-                                            ? (parseFloat(newInvoice?.net || 0) * (newInvoice?.tva || 0) / 100).toFixed(2)
-                                            : "0.00"} €
-                                    </p>
+                                    <p>tva</p>
                                 </div>
                                 <div className='flex items-center justify-between font-bold'>
                                     <p>Total Incl.Tax</p>

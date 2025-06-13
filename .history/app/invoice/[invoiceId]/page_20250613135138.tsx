@@ -136,11 +136,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 </div>
                                 <div className='flex items-center justify-between'>
                                     <p>VAT({newInvoice?.tva ?? 0}%)</p>
-                                    <p>
-                                        {newInvoice?.activeTva
-                                            ? (parseFloat(newInvoice?.net || 0) * (newInvoice?.tva || 0) / 100).toFixed(2)
-                                            : "0.00"} €
-                                    </p>
+                                    <p>tva</p>
                                 </div>
                                 <div className='flex items-center justify-between font-bold'>
                                     <p>Total Incl.Tax</p>

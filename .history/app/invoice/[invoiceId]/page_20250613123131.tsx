@@ -46,26 +46,25 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
     }, [invoiceId])
     useEffect(() => {
         console.log(newInvoice)
-
     }, [newInvoice])
 
     const handleProductChange = (index: number, field: string, value: string) => {
-        const updatedProducts = [...newInvoice.lines];
-        updatedProducts[index][field] = field === "unitPrice" || field === "quantity" ? parseFloat(value) : value;
-        setNewInvoice((prev: any) => ({ ...prev, lines: updatedProducts }));
+        const updatedProducts = [...newInvoice.products];
+        updatedProducts[index][field] = field === "price" || field === "quantity" ? parseFloat(value) : value;
+        setNewInvoice((prev: any) => ({ ...prev, products: updatedProducts }));
     };
     const handleAddProduct = () => {
         const newProduct = { quantity: 1, name: "", unitPrice: 0 }
         setNewInvoice((prev: any) => ({
             ...prev,
-            lines: [...prev.lines, newProduct],
+            products: [...prev.products, newProduct],
         }));
 
     }
     const handleRemoveProduct = (index: number) => {
-        const updatedProducts = [...newInvoice.lines];
+        const updatedProducts = [...newInvoice.products];
         updatedProducts.splice(index, 1);
-        setNewInvoice((prev: any) => ({ ...prev, lines: updatedProducts }));
+        setNewInvoice((prev: any) => ({ ...prev, products: updatedProducts }));
     };
 
 
@@ -125,7 +124,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                         checked={newInvoice?.activeTva}
 
                                     />
-                                    {newInvoice?.activeTva && <input className='w-17 p-1 bg-white rounded-xl' type="number" onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, tva: parseFloat(e.target.value) }))} value={newInvoice.tva} />}
+                                    {newInvoice?.activeTva && <input className='w-17 p-1 bg-white rounded-xl' type="number" />}
 
                                 </div>
                             </div>
@@ -136,11 +135,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 </div>
                                 <div className='flex items-center justify-between'>
                                     <p>VAT({newInvoice?.tva ?? 0}%)</p>
-                                    <p>
-                                        {newInvoice?.activeTva
-                                            ? (parseFloat(newInvoice?.net || 0) * (newInvoice?.tva || 0) / 100).toFixed(2)
-                                            : "0.00"} €
-                                    </p>
+                                    <p>tva</p>
                                 </div>
                                 <div className='flex items-center justify-between font-bold'>
                                     <p>Total Incl.Tax</p>
@@ -155,15 +150,15 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         </div>
                         <div className='flex flex-col gap-5 p-5 bg-[#eaeaea] rounded-md'>
                             <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit font-semibold '>Issuer</p>
-                            <input type="text" placeholder='Company name' className='bg-white p-3 rounded-xl outline-none' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, seller: e.target.value }))} />
-                            <textarea name="" id="" placeholder='Company Address' className='bg-white p-3 rounded-md outline-none h-24' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, sellerCompany: e.target.value }))}></textarea>
-                            <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit  font-semibold' > Client</p>
-                            <input type="text" placeholder=' Client name' className='bg-white p-3 rounded-xl outline-none' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, buyer: e.target.value }))} />
-                            <textarea name="" id="" placeholder='Client address' className='bg-white p-3 rounded-md outline-none h-24' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, buyerCompany: e.target.value }))}></textarea>
+                            <input type="text" placeholder='Company name' className='bg-white p-3 rounded-xl outline-none' onChange={() => setNewInvoice((prev) => ({ ...prev, [seller]: e.target.value }))} />
+                            <textarea name="" id="" placeholder='Company Address' className='bg-white p-3 rounded-md outline-none h-24'></textarea>
+                            <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit  font-semibold'> Client</p>
+                            <input type="text" placeholder=' Client name' className='bg-white p-3 rounded-xl outline-none' />
+                            <textarea name="" id="" placeholder='Client address' className='bg-white p-3 rounded-md outline-none h-24'></textarea>
                             <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit  font-semibold'> Invoice Date</p>
-                            <input type="date" className='bg-white p-3 rounded-md' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, createdAt: e.target.value }))} />
+                            <input type="date" className='bg-white p-3 rounded-md' />
                             <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit  font-semibold'> Due Date</p>
-                            <input type="date" className='bg-white p-3 rounded-md' onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, dueDate: e.target.value }))} />
+                            <input type="date" className='bg-white p-3 rounded-md' />
                         </div>
 
                     </div>
@@ -176,21 +171,21 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 </div>
 
                             </div>
-                            <div className='flex flex-col gap-3 px-4'>
-                                <div className='grid grid-cols-5 gap-6'>
+                            <div>
+                                <div>
                                     <p>Quantity</p>
                                     <p>Description</p>
                                     <p>Unit Price</p>
                                     <p>SubTotal</p>
                                 </div>
-                                {newInvoice?.lines.map((item: any, index: number) => (
-                                    <div key={index} className='grid grid-cols-5 gap-6'>
+                                {newInvoice?.lines.map((item: any, i: number) => (
+                                    <div key={i}>
 
-                                        <input type="number" value={item?.quantity} className='bg-white rounded-md px-1 ' onChange={(e) => handleProductChange(index, "quantity", e.target.value)} />
-                                        <input type="text" value={item?.name} className='bg-white rounded-md px-1 ' onChange={(e) => handleProductChange(index, "name", e.target.value)} />
-                                        <input type="number" value={item?.unitPrice} className='bg-white rounded-md px-1 ' onChange={(e) => handleProductChange(index, "unitPrice", e.target.value)} />
-                                        <div className='bg-white rounded-md px-1 '>{!item.unitPrice ? "0.00" : (item?.unitPrice * item.quantity).toFixed(2)}</div>
-                                        <div className='bg-[#ff8600] p-1 rounded-full w-fit cursor-pointer ' onClick={() => handleRemoveProduct(index)}>
+                                        <input type="number" placeholder='aziz' />
+                                        <input type="text" placeholder='aziz' />
+                                        <input type="number" placeholder='aziz' />
+                                        <input type="number" placeholder='aziz' />
+                                        <div className='bg-[#ff8600] p-1 rounded-full'>
                                             <Trash2 />
                                         </div>
 

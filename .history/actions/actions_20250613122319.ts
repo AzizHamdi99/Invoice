@@ -122,10 +122,7 @@ export const getUserInvoices = async (email: string | undefined) => {
             seller: invoice.seller,
             sellerCompany: invoice.sellerCompany,
             buyer: invoice.buyer,
-            buyerCompany: invoice.buyerCompany,
-            tva: invoice.tva,
-            net: invoice.net,
-            dueDate: invoice.dueDate
+            buyerCompany: invoice.buyerCompany
 
 
         }));

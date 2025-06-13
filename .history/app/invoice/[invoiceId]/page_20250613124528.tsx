@@ -46,13 +46,13 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
     }, [invoiceId])
     useEffect(() => {
         console.log(newInvoice)
-
-    }, [newInvoice])
+        ssdsd
+    }, [])
 
     const handleProductChange = (index: number, field: string, value: string) => {
-        const updatedProducts = [...newInvoice.lines];
-        updatedProducts[index][field] = field === "unitPrice" || field === "quantity" ? parseFloat(value) : value;
-        setNewInvoice((prev: any) => ({ ...prev, lines: updatedProducts }));
+        const updatedProducts = [...newInvoice.products];
+        updatedProducts[index][field] = field === "price" || field === "quantity" ? parseFloat(value) : value;
+        setNewInvoice((prev: any) => ({ ...prev, products: updatedProducts }));
     };
     const handleAddProduct = () => {
         const newProduct = { quantity: 1, name: "", unitPrice: 0 }
@@ -63,9 +63,9 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
     }
     const handleRemoveProduct = (index: number) => {
-        const updatedProducts = [...newInvoice.lines];
+        const updatedProducts = [...newInvoice.products];
         updatedProducts.splice(index, 1);
-        setNewInvoice((prev: any) => ({ ...prev, lines: updatedProducts }));
+        setNewInvoice((prev: any) => ({ ...prev, products: updatedProducts }));
     };
 
 
@@ -125,7 +125,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                         checked={newInvoice?.activeTva}
 
                                     />
-                                    {newInvoice?.activeTva && <input className='w-17 p-1 bg-white rounded-xl' type="number" onChange={(e) => setNewInvoice((prev: any) => ({ ...prev, tva: parseFloat(e.target.value) }))} value={newInvoice.tva} />}
+                                    {newInvoice?.activeTva && <input className='w-17 p-1 bg-white rounded-xl' type="number" />}
 
                                 </div>
                             </div>
@@ -136,11 +136,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 </div>
                                 <div className='flex items-center justify-between'>
                                     <p>VAT({newInvoice?.tva ?? 0}%)</p>
-                                    <p>
-                                        {newInvoice?.activeTva
-                                            ? (parseFloat(newInvoice?.net || 0) * (newInvoice?.tva || 0) / 100).toFixed(2)
-                                            : "0.00"} €
-                                    </p>
+                                    <p>tva</p>
                                 </div>
                                 <div className='flex items-center justify-between font-bold'>
                                     <p>Total Incl.Tax</p>
@@ -177,20 +173,20 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
                             </div>
                             <div className='flex flex-col gap-3 px-4'>
-                                <div className='grid grid-cols-5 gap-6'>
+                                <div className='grid grid-cols-5 gap-3'>
                                     <p>Quantity</p>
                                     <p>Description</p>
                                     <p>Unit Price</p>
                                     <p>SubTotal</p>
                                 </div>
-                                {newInvoice?.lines.map((item: any, index: number) => (
-                                    <div key={index} className='grid grid-cols-5 gap-6'>
+                                {newInvoice?.lines.map((item: any, i: number) => (
+                                    <div key={i} className='grid grid-cols-5 gap-5'>
 
-                                        <input type="number" value={item?.quantity} className='bg-white rounded-md px-1 ' onChange={(e) => handleProductChange(index, "quantity", e.target.value)} />
-                                        <input type="text" value={item?.name} className='bg-white rounded-md px-1 ' onChange={(e) => handleProductChange(index, "name", e.target.value)} />
-                                        <input type="number" value={item?.unitPrice} className='bg-white rounded-md px-1 ' onChange={(e) => handleProductChange(index, "unitPrice", e.target.value)} />
-                                        <div className='bg-white rounded-md px-1 '>{!item.unitPrice ? "0.00" : (item?.unitPrice * item.quantity).toFixed(2)}</div>
-                                        <div className='bg-[#ff8600] p-1 rounded-full w-fit cursor-pointer ' onClick={() => handleRemoveProduct(index)}>
+                                        <input type="number" value={item?.quantity} className='bg-white rounded-md ' />
+                                        <input type="text" value={item?.name} className='bg-white rounded-md ' />
+                                        <input type="number" value={item?.unitPrice} className='bg-white rounded-md ' />
+                                        <input type="number" value={item?.unitPrice * item.quantity} className='bg-white rounded-md ' />
+                                        <div className='bg-[#ff8600] p-1 rounded-full w-fit'>
                                             <Trash2 />
                                         </div>
 
