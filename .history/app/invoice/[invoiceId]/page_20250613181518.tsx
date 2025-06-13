@@ -329,7 +329,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                         <p className='text-[#8a8b8b]'>{newInvoice?.sellerCompany}</p>
 
                                     </div>
-                                    <div className='flex flex-col gap-1.5 items-end'>
+                                    <div className='flex flex-col gap-1.5'>
                                         <p className='bg-[#e7e7e7] px-4 py-0.5 rounded-xl w-fit text-[#646568]'>Client</p>
                                         <p className='text-[#222328] font-bold text-[18px]'>{newInvoice?.buyer}</p>
                                         <p className='text-[#8a8b8b]'>{newInvoice?.buyerCompany}</p>

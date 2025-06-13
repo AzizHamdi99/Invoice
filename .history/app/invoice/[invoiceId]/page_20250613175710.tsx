@@ -301,7 +301,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 <ArrowDownFromLine size={20} />
 
                             </div>
-                            <div className='flex flex-col gap-5 px-5' >
+                            <div className='flex flex-col gap-5' >
                                 <div className='flex items-center justify-between'>
                                     <div>
                                         <div className='flex items-center gap-2 italic'>
@@ -323,13 +323,13 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
                                 </div>
                                 <div className='flex items-center justify-between'>
-                                    <div className='flex flex-col  gap-1.5 items-start'>
+                                    <div className='flex flex-col  gap-1.5'>
                                         <p className='bg-[#e7e7e7] px-4 py-0.5 rounded-xl w-fit text-[#646568]'>Issuer</p>
                                         <p className='text-[#222328] font-bold text-[18px]'>{newInvoice?.seller}</p>
                                         <p className='text-[#8a8b8b]'>{newInvoice?.sellerCompany}</p>
 
                                     </div>
-                                    <div className='flex flex-col gap-1.5 items-end'>
+                                    <div className='flex flex-col gap-1.5'>
                                         <p className='bg-[#e7e7e7] px-4 py-0.5 rounded-xl w-fit text-[#646568]'>Client</p>
                                         <p className='text-[#222328] font-bold text-[18px]'>{newInvoice?.buyer}</p>
                                         <p className='text-[#8a8b8b]'>{newInvoice?.buyerCompany}</p>
@@ -348,7 +348,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         {newInvoice?.lines?.map((item: any, i: number) => (
-                                            <div key={i} className={`grid grid-cols-[1fr_2fr_2fr_2fr_2fr] p-3 text-[#656565] font-medium ${i % 2 !== 0 ? "bg-[#d9d9d9]" : "bg-white"}`}>
+                                            <div key={i} className={`grid grid-cols-[1fr_2fr_2fr_2fr_2fr] p-3 text-[#656565] font-medium${i % 2 !== 0 ? "bg-[#d9d9d9]" : "bg-white"}`}>
                                                 <p>{i + 1}</p>
                                                 <p>{item?.name}</p>
                                                 <p>{item?.quantity}</p>
@@ -362,17 +362,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
 
                                 </div>
-                                <div className='flex items-center justify-between my-4'>
-                                    <div className='font-bold text-[18px] flex flex-col gap-2'>
-                                        <p>Total Excl. Tax</p>
-                                        <p>Total Incl.Tax</p>
 
-                                    </div>
-                                    <div className='flex flex-col gap-2 text-[18px] font-semibold items-center'>
-                                        <p>{newInvoice?.net}$</p>
-                                        <p className='bg-[#ff8600] rounded-xl px-2'>{newInvoice?.total}$</p>
-                                    </div>
-                                </div>
 
 
                             </div>
