@@ -1,7 +1,7 @@
 "use client"
 import Navbar from '@/components/Navbar';
 import axios from 'axios'
-import { ArrowDownFromLine, Download, Loader2, Plus, Save, Trash2 } from 'lucide-react';
+import { Loader2, Plus, Save, Trash2 } from 'lucide-react';
 import { toast } from 'react-hot-toast'
 
 import React, { use, useEffect, useState } from 'react'
@@ -257,7 +257,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         </div>
 
                     </div>
-                    <div className='w-full flex flex-col gap-4'>
+                    <div className='w-full'>
                         <div className='flex flex-col gap-5 p-5 bg-[#eaeaea] rounded-md w-full py-10' >
                             <div className='flex items-center justify-between'>
                                 <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit  font-semibold'>Products / Services</p>
@@ -294,12 +294,11 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
 
                         </div>
-                        <div className='p-5 border-2 border-dashed '>
-                            <div className='flex gap-2 bg-[#ff8600] w-fit px-3 py-1 rounded-md font-medium'>
-                                Invoice PDF
-                                <ArrowDownFromLine size={20} />
+                        <div>
+                            <button>
+                                p
 
-                            </div>
+                            </button>
                             <div>
 
                             </div>

@@ -1,8 +1,7 @@
 "use client"
 import Navbar from '@/components/Navbar';
 import axios from 'axios'
-import { ArrowDownFromLine, Download, Loader2, Plus, Save, Trash2 } from 'lucide-react';
-import { toast } from 'react-hot-toast'
+import { Loader2, Plus, Save, Trash2 } from 'lucide-react';
 
 import React, { use, useEffect, useState } from 'react'
 import {
@@ -26,7 +25,6 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
 
 
 
@@ -39,7 +37,6 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
     const [newInvoice, setNewInvoice] = useState<any>(null)
     const [loading, setLoading] = useState(false)
     // const [hasChanged, setHasChanged] = useState(false)
-    const router = useRouter();
 
     useEffect(() => {
         const fetchInvoice = async () => {
@@ -115,28 +112,16 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
     const handleSave = async () => {
         try {
             await axios.put(`/api/updateInvoice/${invoiceId}`, newInvoice);
-            toast.success("Invoice updated successfully!");
+            alert("Invoice updated!");
         } catch (error) {
             console.error("Save error:", error);
-            toast.error("Error updating invoice.");
-
+            alert("Error saving invoice.");
         }
     };
 
     const handelDelete = async () => {
-        try {
-            const res = await axios.delete(`/api/deleteInvoice/${newInvoice?.id}`);
-            if (res.status === 200) {
-                toast.success("Invoice deleted successfully");
-                router.push('/');
-            } else {
-                toast.error("Failed to delete invoice");
-            }
-        } catch (error: any) {
-            console.error("Delete error:", error);
-            toast.error("An error occurred while deleting");
-        }
-    };
+
+    }
 
 
     if (loading) {
@@ -180,7 +165,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                                 <DialogHeader>
                                     <DialogTitle>Delete Task</DialogTitle>
                                     <DialogDescription>
-                                        Are you sure you want to delete this invoice
+                                        Are you sure you want to delete this task
                                     </DialogDescription>
                                 </DialogHeader>
                                 <DialogFooter>
@@ -257,7 +242,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                         </div>
 
                     </div>
-                    <div className='w-full flex flex-col gap-4'>
+                    <div className='w-full'>
                         <div className='flex flex-col gap-5 p-5 bg-[#eaeaea] rounded-md w-full py-10' >
                             <div className='flex items-center justify-between'>
                                 <p className='text-sm bg-[#ff8600] px-2 py-0.5 rounded-md w-fit  font-semibold'>Products / Services</p>
@@ -294,15 +279,8 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
 
                         </div>
-                        <div className='p-5 border-2 border-dashed '>
-                            <div className='flex gap-2 bg-[#ff8600] w-fit px-3 py-1 rounded-md font-medium'>
-                                Invoice PDF
-                                <ArrowDownFromLine size={20} />
-
-                            </div>
-                            <div>
-
-                            </div>
+                        <div>
+                            pdf
                         </div>
                     </div>
 

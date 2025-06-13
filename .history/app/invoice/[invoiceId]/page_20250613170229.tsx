@@ -294,8 +294,8 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
 
                         </div>
-                        <div className='p-5 border-2 border-dashed '>
-                            <div className='flex gap-2 bg-[#ff8600] w-fit px-3 py-1 rounded-md font-medium'>
+                        <div className='p-5 border border-dotted'>
+                            <div className='flex gap-2 bg-[#ff8600] w-fit px-3 py-1 rounded-md'>
                                 Invoice PDF
                                 <ArrowDownFromLine size={20} />
 
