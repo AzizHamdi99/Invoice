@@ -421,7 +421,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            ${newInvoice?.lines?.map((item, i) => `
+                            ${newInvoice?.lines?.map((item: any, i: number) => `
                                 <tr class="${i % 2 !== 0 ? 'table-row-even' : ''}">
                                     <td class="table-cell">${i + 1}</td>
                                     <td class="table-cell">${item?.name || 'N/A'}</td>
