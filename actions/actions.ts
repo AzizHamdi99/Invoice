@@ -111,12 +111,12 @@ export const getUserInvoices = async (email: string | undefined) => {
         const invoices = await Facture.find({ userId: user._id }).lean()
         const plainInvoices = invoices.map((invoice) => ({
             id: invoice.id,
-            _id: invoice._id.toString(),               // ✅ Serialize ObjectId
+            _id: invoice._id.toString(),
             title: invoice.title,
             total: invoice.total,
-            userId: invoice.userId?.toString(),        // ✅ Serialize userId
+            userId: invoice.userId?.toString(),
             status: invoice.status,
-            createdAt: invoice.createdAt?.toISOString(), // ✅ Serialize Date
+            createdAt: invoice.createdAt?.toISOString(),
             activeTva: invoice.activeTva ?? false,
             lines: invoice.lines ?? [],
             seller: invoice.seller,
