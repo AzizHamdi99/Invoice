@@ -79,7 +79,7 @@ export const createInvoice = async (title: string, email: string | undefined) =>
                 userId: invoice.userId,
                 status: invoice.status,
                 total: invoice.total
-                // createdAt: invoice.createdAt.toISOString(),
+                
             },
             status: 201,
         };

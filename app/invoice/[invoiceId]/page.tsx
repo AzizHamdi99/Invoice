@@ -86,15 +86,7 @@ const details = ({ params }: { params: { invoiceId: string } }) => {
 
 
     }, [newInvoice?.lines, newInvoice?.tva, newInvoice?.activeTva])
-    /*const isEqual = (invoice: any, newInvoice: any) => {
-        return JSON.stringify(invoice) === JSON.stringify(newInvoice);
-    };*/
-
-    /*useEffect(() => {
-        if (!invoice || !newInvoice) return;
-        const changed = !isEqual(invoice, newInvoice); // now deep and safe
-        setHasChanged(changed);
-    }, [invoice, newInvoice]);*/
+   
     useEffect(() => {
         console.log(newInvoice)
         console.log(invoice)

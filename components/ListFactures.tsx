@@ -60,7 +60,7 @@ const ListFactures = () => {
             const res = await axios.post("/api/invoices", { email: userEmail, title })
             console.log(res)
             if (res.status === 201 && res.data?.invoice) {
-                // Append the new invoice directly to the state
+                
                 setInvoices((prev) => [...prev, res.data.invoice])
                 setTitle("")
                 toast.success("Invoice added successfully");
